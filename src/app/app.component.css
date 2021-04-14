@@ -1,0 +1,20 @@
+.container {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+nav {
+  justify-self: end;
+}
+
+nav a {
+  justify-content: center;
+  padding: 1rem;
+  text-decoration: none;
+  margin-top: 10px;
+  display: inline-block;
+  background-color: #e8e8e8;
+  color: #3d3d3d;
+  border-radius: 4px;
+}
+
