@@ -3,23 +3,23 @@
   <mat-slide-toggle></mat-slide-toggle>
 
   <div class="settings-text">Show speed limit</div>
-  <mat-slide-toggle></mat-slide-toggle>
+  <mat-slide-toggle checked></mat-slide-toggle>
 
   <div class="settings-text">Signal tone</div>
   <mat-slide-toggle></mat-slide-toggle>
 
   <div class="settings-text">Accident recognition</div>
-  <mat-slide-toggle></mat-slide-toggle>
+  <mat-slide-toggle disabled></mat-slide-toggle>
 
   <div class="settings-text">Vehicle type</div>
   <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-    <mat-button-toggle value="car">Car</mat-button-toggle>
-    <mat-button-toggle value="truck">Truck</mat-button-toggle>
+    <mat-button-toggle value="car" checked>Car</mat-button-toggle>
+    <mat-button-toggle value="truck" disabled>Truck</mat-button-toggle>
   </mat-button-toggle-group>
 
   <div class="emergency-contact">Emergency contact:</div>
   <div class="emergency-label">Name:</div>
-  <input type="text" name="spind" value="">
+  <input type="text" name="spind" value="" disabled>
   <div class="emergency-label">Phone:</div>
-  <input type="text" name="spind" value="">
+  <input type="text" name="spind" value="" disabled>
 </div>

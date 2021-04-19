@@ -6,8 +6,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-
-  constructor() { }
+    vibration: any;
+    speedLimit: any;
+    signalTone: any;
+    accidentRecognition: any;
+    isCar: any;
+    emergencyContact: any;
+  constructor() {
+    this.vibration = false;
+    this.speedLimit = true;
+    this.signalTone = false;
+    this.accidentRecognition = false;
+    this.isCar = true;
+    this.emergencyContact = {name: '', phone: ''};
+  }
 
   ngOnInit(): void {
   }
