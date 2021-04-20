@@ -27,9 +27,18 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
 ## To deploy the App on Github pages
-Usually, while creating your App, you had it running on your local server, but unfortunately the configuration for the local server will not serve the application when it is deployed on the gh-pages remote server, which is why you need to build your app.
-Run this command on your terminal to build the application:
-* ng build --prod --base-href "https://annaric.github.io/smartSpedometer"
-  
-After building the App, you can now deploy it to Github Pages using the angular-cli-ghpages tool:
-* npx angular-cli-ghpages - dir=dist/smartSpeedometer
+1. Create and check out a git branch named gh-pages:
+
+``git checkout -b gh-pages``
+
+2. Build the project with the Angular CLI command ng build and the following options. Be sure to include the slashes on either side /smartSpedometer/.
+
+``ng build --prod --output-path docs --base-href /smartSpeedometer/``
+
+3. When the build is complete, make a copy of docs/index.html and name it docs/404.html.
+
+4. Commit your changes and push.
+
+5. On the GitHub project page, go to Settings and scroll down to the GitHub Pages section to configure the site to publish from the docs folder. Click Save.
+
+Click on the GitHub Pages link at the top of the GitHub Pages section to see your deployed application. The format of the link is https://annaric.github.io/smartSpedometer/

@@ -1,18 +1,18 @@
-@font-face {
+/*@font-face {
   font-family: SpeedLimitFont;
   src: url('../../data/DIN1451/din1451a.ttf')
   format("truetype");
-}
+}*/
 
 .container {
-  --gruen: #99EEA4;
+  /*--gruen: #99EEA4;
   --rot: #fe6868;
   --gelb: #eeee99;
   --settings-green: #11bf28;
-  --settings-red: #ff3737;
+  --settings-red: #ff3737;*/
   background-color: white;
   margin-top: 20px;
-  font-family: 'Roboto';
+  /*font-family: 'Roboto';*/
   display: grid;
   grid-template-columns: auto auto;
   grid-row-gap: 10px;
@@ -25,10 +25,6 @@ input[type="checkbox"] {
   opacity: 0;
   width: 0;
   height: 0;
-}
-
-input:checked + .slider:before {
-  transform: translateX(32px);
 }
 
 .emergency-contact {
@@ -51,34 +47,11 @@ input {
   margin-left: 20px;
 }
 
-.toggle-buttons {
-  justify-self: end;
-}
-
 mat-button-toggle-group {
   border: solid 1px #707070;
   border-radius: 10px;
   font-size: 15px;
   justify-self: end;
-}
-
-#car:enabled,
-#truck:enabled {
-  background: white;
-}
-
-#car:disabled,
-#truck:disabled {
-  background: var(--settings-green);
-  color: black;
-}
-
-#car {
-  border-radius: 10px 0px 0px 10px;
-}
-
-#truck {
-  border-radius: 0px 10px 10px 0px;
 }
 
 .mat-slide-toggle {
@@ -99,13 +72,13 @@ mat-button-toggle-group {
 }
 
 ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
-  background-color: var(--settings-green);
+  background-color: #11bf28;
 }
 
 ::ng-deep .mat-button-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
-  background-color: var(--settings-green);
+  background-color: #11bf28;
 }
 
 ::ng-deep .mat-button-toggle-checked {
-  background-color: var(--settings-green);
+  background-color: #11bf28;
 }
