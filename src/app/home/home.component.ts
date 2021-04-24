@@ -1,49 +1,52 @@
-import { Component, OnInit } from '@angular/core';
-import {INT_TYPE} from '@angular/compiler/src/output/output_ast';
+import {Component, OnInit} from '@angular/core';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
-
 export class HomeComponent implements OnInit {
-  speedValue: any;
-  speedLimit: any;
-  mySpeed: any;
-  myLocation: any;
-  position: any;
-  oldLocation: any;
-
+  speedValue: any = 0;
+  speedLimit: any = 0;
+  location = null;
+  oldLocation: any = null;
   constructor() {
-    this.speedValue = 0;
-    this.speedLimit = 50;
-    this.mySpeed = setInterval(this.getSpeed, 10000);
-    this.myLocation = setInterval(this.getLocation, 1000);
   }
-
   ngOnInit(): void {
+    this.getLocation();
+    setInterval(() => this.getSpeed(), 1000);
   }
-
   getSpeed(): void {
-    this.oldLocation = this.position;
     this.getLocation();
     const oldLatitude = this.oldLocation.coords.latitude;
-    const newLatitude = this.position.coords.latitude;
-    const oldLongitude = this.oldLocation.coords.latitude;
-    const newLongitude = this.position.coords.latitude;
+    const oldLongitude = this.oldLocation.coords.longitude;
+    const newLatitude = this.location.coords.latitude;
+    const newLongitude = this.location.coords.longitude;
     const dist = this.getDistance(oldLatitude, oldLongitude, newLatitude, newLongitude);
-    const time = (this.position.timestamp - this.oldLocation.timestamp) / 1000.0;
-    const speedMps = dist / time;
-    this.speedValue = (speedMps * 3600.0) / 1000.0;
-    document.getElementById('speed-bubble').innerHTML = this.speedValue;
+    console.log('this.oldLocation.timestamp');
+    console.log(this.oldLocation.timestamp);
+    console.log('this.location.timestamp');
+    console.log(this.location.timestamp);
+    const time = ((this.location.timestamp) - this.oldLocation.timestamp) / 1000.0;
+    console.log('time');
+    console.log(time);
+    let speedMps = 0;
+    if (time !== 0) {
+      speedMps = dist / time;
+    }
+    // document.getElementById('speed-bubble').innerHTML = String((speedMps * 3600.0) / 1000.0);
+    this.speedValue = String((speedMps * 3600.0) / 1000.0);
   }
-
   getLocation(): void {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => this.position = position);
+      navigator.geolocation.getCurrentPosition((pos) => this.succes(pos), (err) => this.error(err), {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      });
     } else {
-      this.position = null;
+      this.location = null;
     }
   }
   getDistance(lat1: number, lon1: number, lat2: number, lon2: number): any {
@@ -78,4 +81,18 @@ export class HomeComponent implements OnInit {
       // Distance in Metres
       return r * theta;
     }
+
+  error(err): void {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+    localStorage.setItem('location', null);
   }
+  succes(pos): void {
+    this.oldLocation = this.location;
+    this.location = pos;
+    console.log('Your current position is:');
+    console.log(`Latitude : ${this.location.coords.latitude}`);
+    console.log(`Longitude: ${this.location.coords.longitude}`);
+    console.log(`More or less ${this.location.coords.accuracy} meters.`);
+  }
+
+}
