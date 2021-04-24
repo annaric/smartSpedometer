@@ -19,24 +19,25 @@ export class HomeComponent implements OnInit {
   }
   getSpeed(): void {
     this.getLocation();
-    const oldLatitude = this.oldLocation.coords.latitude;
-    const oldLongitude = this.oldLocation.coords.longitude;
-    const newLatitude = this.location.coords.latitude;
-    const newLongitude = this.location.coords.longitude;
-    const dist = this.getDistance(oldLatitude, oldLongitude, newLatitude, newLongitude);
-    console.log('this.oldLocation.timestamp');
-    console.log(this.oldLocation.timestamp);
-    console.log('this.location.timestamp');
-    console.log(this.location.timestamp);
-    const time = ((this.location.timestamp) - this.oldLocation.timestamp) / 1000.0;
-    console.log('time');
-    console.log(time);
-    let speedMps = 0;
-    if (time !== 0) {
-      speedMps = dist / time;
+    if (this.oldLocation != null && this.location != null) {
+      const oldLatitude = this.oldLocation.coords.latitude;
+      const oldLongitude = this.oldLocation.coords.longitude;
+      const newLatitude = this.location.coords.latitude;
+      const newLongitude = this.location.coords.longitude;
+      const dist = this.getDistance(oldLatitude, oldLongitude, newLatitude, newLongitude);
+      console.log('this.oldLocation.timestamp');
+      console.log(this.oldLocation.timestamp);
+      console.log('this.location.timestamp');
+      console.log(this.location.timestamp);
+      const time = ((this.location.timestamp) - this.oldLocation.timestamp) / 1000.0;
+      console.log('time');
+      console.log(time);
+      let speedMps = 0;
+      if (time !== 0) {
+        speedMps = dist / time;
+      }
+      this.speedValue = String(Math.ceil((speedMps * 3600.0) / 1000.0));
     }
-    // document.getElementById('speed-bubble').innerHTML = String((speedMps * 3600.0) / 1000.0);
-    this.speedValue = String((speedMps * 3600.0) / 1000.0);
   }
   getLocation(): void {
     if (navigator.geolocation) {
