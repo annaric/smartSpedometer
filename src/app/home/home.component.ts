@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {DataService} from '../data.service';
 
 
@@ -7,7 +7,7 @@ import {DataService} from '../data.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy{
   speedValue: any = 0;
   speedLimit: any = 0;
   location = null;
@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
   vibration: boolean;
   signalTone: boolean;
   showSpeedLimit: boolean;
+  intervalId: any;
   constructor(private data: DataService) {
   }
   ngOnInit(): void {
@@ -22,8 +23,10 @@ export class HomeComponent implements OnInit {
     this.data.currentShowSpeedLimitStatus.subscribe(showSpeedLimit => this.showSpeedLimit = showSpeedLimit);
     this.data.currentSignalToneStatus.subscribe(signalTone => this.signalTone = signalTone);
     this.getLocation();
-    setInterval(() => this.getSpeed(), 1000);
-    setInterval(() => this.simulateSpeedLimit(), 5500);
+    this.intervalId = setInterval(() => this.getSpeed(), 1000);
+  }
+  ngOnDestroy(): void {
+    clearInterval(this.intervalId);
   }
   getSpeed(): void {
     this.getLocation();
@@ -39,6 +42,7 @@ export class HomeComponent implements OnInit {
         speedMps = dist / time;
       }
       this.speedValue = String(Math.ceil((speedMps * 3600.0) / 1000.0));
+      this.simulateSpeedLimit();
     }
   }
   getLocation(): void {
@@ -96,30 +100,21 @@ export class HomeComponent implements OnInit {
   simulateSpeedLimit(): void {
     const currValue = this.speedValue;
     const currOverflow = this.speedValue % 10;
-    if ( currOverflow <= 3 && currOverflow > 0 && currValue > 30) {
-      this.speedLimit = Math.round(currValue - currOverflow);
-      this.ifMediumFast();
-    } else if (currOverflow > 3 && currValue > 30 && currOverflow <= 7) {
-      this.speedLimit = Math.round(currValue - currOverflow);
-      this.ifTooFast();
-    } else {
-      this.speedLimit = Math.round(currValue + (10 - currOverflow));
-      this.ifSlowEnough();
+    const homeBody = document.getElementById('homeBody');
+    if (this.showSpeedLimit) {
+      if (currOverflow <= 3 && currOverflow > 0 && currValue > 30 && currValue < 140) {
+        this.speedLimit = Math.round(currValue - currOverflow);
+        homeBody.setAttribute('class', 'medium-fast');
+      } else if (currOverflow > 3 && currValue > 30 && currOverflow <= 7 && currValue < 140) {
+        this.speedLimit = Math.round(currValue - currOverflow);
+        homeBody.setAttribute('class', 'too-fast');
+        if (this.vibration) {window.navigator.vibrate(400); }
+        this.playAudio();
+      } else {
+        this.speedLimit = Math.round(currValue + (10 - currOverflow));
+        homeBody.setAttribute('class', 'slow-enough');
+      }
     }
-  }
-  ifTooFast(): void {
-    const homeBody = document.getElementById('homeBody');
-    if (this.showSpeedLimit) { homeBody.setAttribute('class', 'too-fast'); }
-    if (this.vibration) { window.navigator.vibrate(400); }
-    this.playAudio();
-  }
-  ifSlowEnough(): void {
-    const homeBody = document.getElementById('homeBody');
-    if (this.showSpeedLimit) { homeBody.setAttribute('class', 'slow-enough'); }
-  }
-  ifMediumFast(): void {
-    const homeBody = document.getElementById('homeBody');
-    if (this.showSpeedLimit) { homeBody.setAttribute('class', 'medium-fast'); }
   }
   playAudio(): void {
     if (this.signalTone) {
