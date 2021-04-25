@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {DataService} from '../data.service';
 
 
 @Component({
@@ -11,11 +12,18 @@ export class HomeComponent implements OnInit {
   speedLimit: any = 0;
   location = null;
   oldLocation: any = null;
-  constructor() {
+  vibration: boolean;
+  signalTone = true;
+  showSpeedLimit = true;
+  constructor(private data: DataService) {
   }
   ngOnInit(): void {
+    this.data.currentVibrationStatus.subscribe(vibration => this.vibration = vibration);
+    this.data.currentShowSpeedLimitStatus.subscribe(showSpeedLimit => this.showSpeedLimit = showSpeedLimit);
+    this.data.currentSignalToneStatus.subscribe(signalTone => this.signalTone = signalTone);
     this.getLocation();
     setInterval(() => this.getSpeed(), 1000);
+    setInterval(() => this.simulateSpeedLimit(), 5000);
   }
   getSpeed(): void {
     this.getLocation();
@@ -25,13 +33,7 @@ export class HomeComponent implements OnInit {
       const newLatitude = this.location.coords.latitude;
       const newLongitude = this.location.coords.longitude;
       const dist = this.getDistance(oldLatitude, oldLongitude, newLatitude, newLongitude);
-      console.log('this.oldLocation.timestamp');
-      console.log(this.oldLocation.timestamp);
-      console.log('this.location.timestamp');
-      console.log(this.location.timestamp);
       const time = ((this.location.timestamp) - this.oldLocation.timestamp) / 1000.0;
-      console.log('time');
-      console.log(time);
       let speedMps = 0;
       if (time !== 0) {
         speedMps = dist / time;
@@ -82,7 +84,6 @@ export class HomeComponent implements OnInit {
       // Distance in Metres
       return r * theta;
     }
-
   error(err): void {
     console.warn(`ERROR(${err.code}): ${err.message}`);
     localStorage.setItem('location', null);
@@ -90,10 +91,42 @@ export class HomeComponent implements OnInit {
   succes(pos): void {
     this.oldLocation = this.location;
     this.location = pos;
-    console.log('Your current position is:');
-    console.log(`Latitude : ${this.location.coords.latitude}`);
-    console.log(`Longitude: ${this.location.coords.longitude}`);
-    console.log(`More or less ${this.location.coords.accuracy} meters.`);
   }
 
+  simulateSpeedLimit(): void {
+    const currValue = this.speedValue;
+    const currOverflow = this.speedValue % 10;
+    if ( currOverflow <= 3 && currOverflow > 0 && currValue > 30) {
+      this.speedLimit = Math.round(currValue - currOverflow);
+      this.ifMediumFast();
+    } else if (currOverflow > 3 && currValue > 30 && currOverflow <= 7) {
+      this.speedLimit = Math.round(currValue - currOverflow);
+      this.ifTooFast();
+    } else {
+      this.speedLimit = Math.round(currValue + (10 - currOverflow));
+      this.ifSlowEnough();
+    }
+  }
+  ifTooFast(): void {
+    const homeBody = document.getElementById('homeBody');
+    if (this.showSpeedLimit) { homeBody.setAttribute('class', 'too-fast'); }
+    if (this.vibration) { window.navigator.vibrate(400); }
+    this.playAudio();
+  }
+  ifSlowEnough(): void {
+    const homeBody = document.getElementById('homeBody');
+    if (this.showSpeedLimit) { homeBody.setAttribute('class', 'slow-enough'); }
+  }
+  ifMediumFast(): void {
+    const homeBody = document.getElementById('homeBody');
+    if (this.showSpeedLimit) { homeBody.setAttribute('class', 'medium-fast'); }
+  }
+  playAudio(): void {
+    if (this.signalTone) {
+      const audio = new Audio();
+      audio.src = '../../assets/audio/two-beeps.mp3';
+      audio.load();
+      audio.play();
+    }
+  }
 }
