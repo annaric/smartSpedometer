@@ -9,7 +9,7 @@ import {DataService} from '../data.service';
 })
 export class HomeComponent implements OnInit, OnDestroy{
   speedValue: any = 0;
-  speedLimit: any = 0;
+  speedLimit: any = 50;
   location = null;
   oldLocation: any = null;
   vibration: boolean;
@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit, OnDestroy{
     this.data.currentShowSpeedLimitStatus.subscribe(showSpeedLimit => this.showSpeedLimit = showSpeedLimit);
     this.data.currentSignalToneStatus.subscribe(signalTone => this.signalTone = signalTone);
     this.getLocation();
-    this.intervalId = setInterval(() => this.getSpeed(), 3000);
+    this.intervalId = setInterval(() => this.getSpeed(), 1000);
   }
   ngOnDestroy(): void {
     clearInterval(this.intervalId);
@@ -42,7 +42,13 @@ export class HomeComponent implements OnInit, OnDestroy{
         speedMps = dist / time;
       }
       this.speedValue = String(Math.ceil((speedMps * 3600.0) / 1000.0));
-      this.simulateSpeedLimit();
+      /* if (this.speedValue >= this.speedLimit + 3) {
+        const homeBody = document.getElementById('homeBody');
+        homeBody.setAttribute('class', 'too-fast');
+        if (this.vibration) {window.navigator.vibrate(500); }
+        this.playAudio();
+      }
+      // this.simulateSpeedLimit();*/
     }
   }
   getLocation(): void {
