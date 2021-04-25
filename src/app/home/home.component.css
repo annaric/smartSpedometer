@@ -5,18 +5,19 @@
   grid-template-rows: 3fr 1fr;
   grid-template-columns: auto auto;
   grid-auto-rows: minmax(50px, auto);
+  background-color: var(--background-color, #99EEA4);
 }
 
 .slow-enough {
-  background-color: #99EEA4;
+  --background-color: #99EEA4;
 }
 
 .medium-fast {
-  background-color: #eeee99;
+  --background-color: #eeee99;
 }
 
 .too-fast {
-  background-color: #fe6868;
+  --background-color: #fe6868;
 }
 
 #speed-bubble {
@@ -53,6 +54,9 @@
   margin: 10px;
 }
 @media screen and (max-width: 500px) {
+  #homeBody {
+    height: 85%
+  }
   #speed-limit {
     width: 100px;
     height: 100px;

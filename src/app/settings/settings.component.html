@@ -9,7 +9,7 @@
   <mat-slide-toggle id="signalTone" (change)="changeSignalTone()" [checked]="signalTone"></mat-slide-toggle>
 
   <div class="settings-text">Accident recognition</div>
-  <mat-slide-toggle disabled></mat-slide-toggle>
+  <mat-slide-toggle (change)="changeAccidentRecognition()" [checked]="accidentRecognition" disabled></mat-slide-toggle>
 
   <div class="settings-text">Vehicle type</div>
   <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
@@ -17,9 +17,9 @@
     <mat-button-toggle value="truck" disabled>Truck</mat-button-toggle>
   </mat-button-toggle-group>
 
-  <div class="emergency-contact">Emergency contact:</div>
-  <div class="emergency-label">Name:</div>
-  <input type="text" name="spind" value="" disabled>
-  <div class="emergency-label">Phone:</div>
-  <input type="text" name="spind" value="" disabled>
+  <div *ngIf="accidentRecognition" class="emergency-contact">Emergency contact:</div>
+  <div *ngIf="accidentRecognition" class="emergency-label">Name:</div>
+  <input *ngIf="accidentRecognition" type="text" name="spind" value="" disabled>
+  <div *ngIf="accidentRecognition" class="emergency-label">Phone:</div>
+  <input *ngIf="accidentRecognition" type="text" name="spind" value="" disabled>
 </div>

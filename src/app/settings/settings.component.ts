@@ -27,28 +27,16 @@ export class SettingsComponent implements OnInit {
     if (this.signalTone) { signalToneButton.setAttribute('checked', ''); }
   }
   changeSpeedLimit(): void {
-    if (this.showSpeedLimit) {
-      this.data.changeShowSpeedLimit(false);
-    } else {
-      this.data.changeShowSpeedLimit(true);
-    }
-    console.log(this.showSpeedLimit);
+    this.data.changeShowSpeedLimit(!this.showSpeedLimit);
   }
 
   changeSignalTone(): void {
-    if (this.signalTone) {
-      this.data.changeSignalTone(false);
-    } else {
-      this.data.changeSignalTone(true);
-    }
-    console.log(this.signalTone);
+    this.data.changeSignalTone(!this.signalTone);
   }
   changeVibration(): void {
-    if (this.vibration) {
-      this.data.changeVibration(false);
-    } else {
-      this.data.changeVibration(true);
-    }
-    console.log(this.vibration);
+    this.data.changeVibration(!this.vibration);
+  }
+  changeAccidentRecognition(): void {
+    this.accidentRecognition = !this.accidentRecognition;
   }
 }
