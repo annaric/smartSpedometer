@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit, OnDestroy{
     this.data.currentShowSpeedLimitStatus.subscribe(showSpeedLimit => this.showSpeedLimit = showSpeedLimit);
     this.data.currentSignalToneStatus.subscribe(signalTone => this.signalTone = signalTone);
     this.getLocation();
-    this.intervalId = setInterval(() => this.getSpeed(), 5000);
+    this.intervalId = setInterval(() => this.getSpeed(), 3000);
   }
   ngOnDestroy(): void {
     clearInterval(this.intervalId);
@@ -101,15 +101,15 @@ export class HomeComponent implements OnInit, OnDestroy{
     const homeBody = document.getElementById('homeBody');
     if (this.showSpeedLimit) {
       if ((this.speedValue % 10) <= 3 && (this.speedValue % 10) > 0 && this.speedValue > 30 && this.speedValue < 140) {
-        this.speedLimit = Math.round(this.speedValue - (this.speedValue % 10));
+        this.speedLimit = Math.round(Number(this.speedValue) - (Number(this.speedValue) % 10));
         homeBody.setAttribute('class', 'medium-fast');
       } else if ((this.speedValue % 10) > 3 && this.speedValue > 30 && (this.speedValue % 10) <= 7 && this.speedValue < 140) {
-        this.speedLimit = Math.round(this.speedValue - (this.speedValue % 10));
+        this.speedLimit = Math.round(Number(this.speedValue) - (Number(this.speedValue) % 10));
         homeBody.setAttribute('class', 'too-fast');
-        if (this.vibration) {window.navigator.vibrate(400); }
+        if (this.vibration) {window.navigator.vibrate(1000); }
         this.playAudio();
       } else {
-        this.speedLimit = Math.round(this.speedValue + (10 - (this.speedValue % 10)));
+        this.speedLimit = Math.round(Number(this.speedValue) + (10 - (Number(this.speedValue) % 10)));
         homeBody.setAttribute('class', 'slow-enough');
       }
     }
