@@ -13,18 +13,22 @@ export class SettingsComponent implements OnInit {
     accidentRecognition = false;
     isCar = true;
     emergencyContact = {name: '', phone: ''};
+    speedLimitValue = '';
   constructor(private data: DataService) {}
 
   ngOnInit(): void {
     this.data.currentVibrationStatus.subscribe(vibration => this.vibration = vibration);
     this.data.currentShowSpeedLimitStatus.subscribe(showSpeedLimit => this.showSpeedLimit = showSpeedLimit);
     this.data.currentSignalToneStatus.subscribe(signalTone => this.signalTone = signalTone);
+    this.data.currentSpeedLimitValue.subscribe(speedLimitValue => this.speedLimitValue = speedLimitValue);
     const vibrationButton = document.getElementById('vibration');
     const speedLimitButton = document.getElementById('speedLimit');
     const signalToneButton = document.getElementById('signalTone');
+    const speedLimitValueInput = document.getElementById('speedLimitValue');
     if (this.vibration) { vibrationButton.setAttribute('checked', ''); }
     if (this.showSpeedLimit) { speedLimitButton.setAttribute('checked', ''); }
     if (this.signalTone) { signalToneButton.setAttribute('checked', ''); }
+    speedLimitValueInput.setAttribute('value', this.speedLimitValue);
   }
   changeSpeedLimit(): void {
     this.data.changeShowSpeedLimit(!this.showSpeedLimit);
@@ -38,5 +42,10 @@ export class SettingsComponent implements OnInit {
   }
   changeAccidentRecognition(): void {
     this.accidentRecognition = !this.accidentRecognition;
+  }
+
+  setNewSpeedLimitValue(): void {
+    this.data.changeSpeedLimitValue(this.speedLimitValue);
+    console.log(this.speedLimitValue);
   }
 }

@@ -1,6 +1,6 @@
 <div class="container">
   <div class="settings-text">Vibration</div>
-  <mat-slide-toggle id="vibration" (change)="changeVibration()" [checked]="vibration"> </mat-slide-toggle>
+  <mat-slide-toggle id="vibration" (change)="changeVibration()" [checked]="vibration"></mat-slide-toggle>
 
   <div class="settings-text">Show speed limit</div>
   <mat-slide-toggle id="speedLimit" (change)="changeSpeedLimit()" [checked]="showSpeedLimit"></mat-slide-toggle>
@@ -17,9 +17,14 @@
     <mat-button-toggle value="truck" disabled>Truck</mat-button-toggle>
   </mat-button-toggle-group>
 
+  <div *ngIf="showSpeedLimit" class="speed-limit-label">Speed Limit</div>
+  <input *ngIf="showSpeedLimit" type="text" class="form-control" id="speedLimitValue" name="speedLimitValue"
+         [(ngModel)]="speedLimitValue" value="{{speedLimitValue}}" placeholder="Speed limit to be checked..." (change)="setNewSpeedLimitValue()">
+
+
   <div *ngIf="accidentRecognition" class="emergency-contact">Emergency contact:</div>
   <div *ngIf="accidentRecognition" class="emergency-label">Name:</div>
-  <input *ngIf="accidentRecognition" type="text" name="spind" value="" disabled>
+  <input *ngIf="accidentRecognition" type="text" name="spind" value="">
   <div *ngIf="accidentRecognition" class="emergency-label">Phone:</div>
-  <input *ngIf="accidentRecognition" type="text" name="spind" value="" disabled>
+  <input *ngIf="accidentRecognition" type="text" name="spind" value="">
 </div>
