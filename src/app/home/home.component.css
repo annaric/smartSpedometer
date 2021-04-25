@@ -6,9 +6,10 @@
 
 .container {
   width: 100%;
+  height: 93%;
   background-color: #99EEA4;
   display: grid;
-  grid-template-rows: 1fr 3fr 1fr;
+  grid-template-rows: 3fr 1fr;
   grid-template-columns: auto auto;
   grid-auto-rows: minmax(50px, auto);
 }

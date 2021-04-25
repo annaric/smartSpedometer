@@ -25,13 +25,7 @@ export class HomeComponent implements OnInit {
       const newLatitude = this.location.coords.latitude;
       const newLongitude = this.location.coords.longitude;
       const dist = this.getDistance(oldLatitude, oldLongitude, newLatitude, newLongitude);
-      console.log('this.oldLocation.timestamp');
-      console.log(this.oldLocation.timestamp);
-      console.log('this.location.timestamp');
-      console.log(this.location.timestamp);
       const time = ((this.location.timestamp) - this.oldLocation.timestamp) / 1000.0;
-      console.log('time');
-      console.log(time);
       let speedMps = 0;
       if (time !== 0) {
         speedMps = dist / time;
