@@ -11,7 +11,7 @@ export class SettingsComponent implements OnInit {
     showSpeedLimit: boolean;
     signalTone: boolean;
     accidentRecognition = false;
-    isCar: true;
+    isCar = true;
     emergencyContact = {name: '', phone: ''};
   constructor(private data: DataService) {}
 

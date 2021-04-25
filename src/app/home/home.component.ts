@@ -13,8 +13,8 @@ export class HomeComponent implements OnInit {
   location = null;
   oldLocation: any = null;
   vibration: boolean;
-  signalTone = true;
-  showSpeedLimit = true;
+  signalTone: boolean;
+  showSpeedLimit: boolean;
   constructor(private data: DataService) {
   }
   ngOnInit(): void {
@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
     this.data.currentSignalToneStatus.subscribe(signalTone => this.signalTone = signalTone);
     this.getLocation();
     setInterval(() => this.getSpeed(), 1000);
-    setInterval(() => this.simulateSpeedLimit(), 5000);
+    setInterval(() => this.simulateSpeedLimit(), 5500);
   }
   getSpeed(): void {
     this.getLocation();
