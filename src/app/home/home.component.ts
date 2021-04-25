@@ -11,11 +11,15 @@ export class HomeComponent implements OnInit {
   speedLimit: any = 0;
   location = null;
   oldLocation: any = null;
+  vibration = true;
+  signalTone = true;
+  showSpeedLimit = true;
   constructor() {
   }
   ngOnInit(): void {
     this.getLocation();
     setInterval(() => this.getSpeed(), 1000);
+    setInterval(() => this.simulateSpeedLimit(), 5000);
   }
   getSpeed(): void {
     this.getLocation();
@@ -76,7 +80,6 @@ export class HomeComponent implements OnInit {
       // Distance in Metres
       return r * theta;
     }
-
   error(err): void {
     console.warn(`ERROR(${err.code}): ${err.message}`);
     localStorage.setItem('location', null);
@@ -90,4 +93,40 @@ export class HomeComponent implements OnInit {
     console.log(`More or less ${this.location.coords.accuracy} meters.`);
   }
 
+  simulateSpeedLimit(): void {
+    const currValue = this.speedValue;
+    const currOverflow = this.speedValue % 10;
+    if ( currOverflow <= 3 && currOverflow > 0 && currValue > 30) {
+      this.speedLimit = Math.round(currValue - currOverflow);
+      this.ifMediumFast();
+    } else if (currOverflow > 3 && currValue > 30 && currOverflow <= 7) {
+      this.speedLimit = Math.round(currValue - currOverflow);
+      this.ifTooFast();
+    } else {
+      this.speedLimit = Math.round(currValue + (10 - currOverflow));
+      this.ifSlowEnough();
+    }
+  }
+  ifTooFast(): void {
+    const homeBody = document.getElementById('homeBody');
+    if (this.showSpeedLimit) { homeBody.setAttribute('class', 'too-fast'); }
+    if (this.vibration) { window.navigator.vibrate(400); }
+    this.playAudio();
+  }
+  ifSlowEnough(): void {
+    const homeBody = document.getElementById('homeBody');
+    if (this.showSpeedLimit) { homeBody.setAttribute('class', 'slow-enough'); }
+  }
+  ifMediumFast(): void {
+    const homeBody = document.getElementById('homeBody');
+    if (this.showSpeedLimit) { homeBody.setAttribute('class', 'medium-fast'); }
+  }
+  playAudio(): void {
+    if (this.signalTone) {
+      const audio = new Audio();
+      audio.src = '../../assets/audio/two-beeps.mp3';
+      audio.load();
+      audio.play();
+    }
+  }
 }
