@@ -41,6 +41,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 5. On the GitHub project page, go to Settings and scroll down to the GitHub Pages section to configure the site to publish from the docs folder. Click Save.
 
-Click on the GitHub Pages link at the top of the GitHub Pages section to see your deployed application. The format of the link is https://annaric.github.io/smartSpedometer/
+Click on the GitHub Pages link at the top of the GitHub Pages section to see your deployed application. The format of the link is https://annaric.github.io/smartSpeedometer/
 
 (See more on https://angular.io/guide/deployment)
