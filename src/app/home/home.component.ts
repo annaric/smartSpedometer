@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {DataService} from '../data.service';
 
 
 @Component({
@@ -11,12 +12,15 @@ export class HomeComponent implements OnInit {
   speedLimit: any = 0;
   location = null;
   oldLocation: any = null;
-  vibration = true;
+  vibration: boolean;
   signalTone = true;
   showSpeedLimit = true;
-  constructor() {
+  constructor(private data: DataService) {
   }
   ngOnInit(): void {
+    this.data.currentVibrationStatus.subscribe(vibration => this.vibration = vibration);
+    this.data.currentShowSpeedLimitStatus.subscribe(showSpeedLimit => this.showSpeedLimit = showSpeedLimit);
+    this.data.currentSignalToneStatus.subscribe(signalTone => this.signalTone = signalTone);
     this.getLocation();
     setInterval(() => this.getSpeed(), 1000);
     setInterval(() => this.simulateSpeedLimit(), 5000);
@@ -87,10 +91,6 @@ export class HomeComponent implements OnInit {
   succes(pos): void {
     this.oldLocation = this.location;
     this.location = pos;
-    console.log('Your current position is:');
-    console.log(`Latitude : ${this.location.coords.latitude}`);
-    console.log(`Longitude: ${this.location.coords.longitude}`);
-    console.log(`More or less ${this.location.coords.accuracy} meters.`);
   }
 
   simulateSpeedLimit(): void {

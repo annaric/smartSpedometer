@@ -1,12 +1,12 @@
 <div class="container">
   <div class="settings-text">Vibration</div>
-  <mat-slide-toggle></mat-slide-toggle>
+  <mat-slide-toggle id="vibration" (change)="changeVibration()" [checked]="vibration"> </mat-slide-toggle>
 
   <div class="settings-text">Show speed limit</div>
-  <mat-slide-toggle checked></mat-slide-toggle>
+  <mat-slide-toggle id="speedLimit" (change)="changeSpeedLimit()" [checked]="showSpeedLimit"></mat-slide-toggle>
 
   <div class="settings-text">Signal tone</div>
-  <mat-slide-toggle></mat-slide-toggle>
+  <mat-slide-toggle id="signalTone" (change)="changeSignalTone()" [checked]="signalTone"></mat-slide-toggle>
 
   <div class="settings-text">Accident recognition</div>
   <mat-slide-toggle disabled></mat-slide-toggle>
