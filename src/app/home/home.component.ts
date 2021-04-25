@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 
 
 @Component({
@@ -6,16 +6,23 @@ import {Component, OnInit} from '@angular/core';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   speedValue: any = 0;
-  speedLimit: any = 0;
+  speedLimit: any = 50;
   location = null;
   oldLocation: any = null;
+  showSpeedLimit = true;
+  intervalId: any;
+  vibration: boolean;
+  signalTone: boolean;
   constructor() {
   }
   ngOnInit(): void {
     this.getLocation();
-    setInterval(() => this.getSpeed(), 1000);
+    this.intervalId = setInterval(() => this.getSpeed(), 1000);
+  }
+  ngOnDestroy(): void {
+    clearInterval(this.intervalId);
   }
   getSpeed(): void {
     this.getLocation();
@@ -25,13 +32,7 @@ export class HomeComponent implements OnInit {
       const newLatitude = this.location.coords.latitude;
       const newLongitude = this.location.coords.longitude;
       const dist = this.getDistance(oldLatitude, oldLongitude, newLatitude, newLongitude);
-      console.log('this.oldLocation.timestamp');
-      console.log(this.oldLocation.timestamp);
-      console.log('this.location.timestamp');
-      console.log(this.location.timestamp);
       const time = ((this.location.timestamp) - this.oldLocation.timestamp) / 1000.0;
-      console.log('time');
-      console.log(time);
       let speedMps = 0;
       if (time !== 0) {
         speedMps = dist / time;
@@ -82,7 +83,6 @@ export class HomeComponent implements OnInit {
       // Distance in Metres
       return r * theta;
     }
-
   error(err): void {
     console.warn(`ERROR(${err.code}): ${err.message}`);
     localStorage.setItem('location', null);
@@ -90,10 +90,6 @@ export class HomeComponent implements OnInit {
   succes(pos): void {
     this.oldLocation = this.location;
     this.location = pos;
-    console.log('Your current position is:');
-    console.log(`Latitude : ${this.location.coords.latitude}`);
-    console.log(`Longitude: ${this.location.coords.longitude}`);
-    console.log(`More or less ${this.location.coords.accuracy} meters.`);
   }
 
 }

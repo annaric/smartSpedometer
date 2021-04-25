@@ -41,6 +41,7 @@ input {
 .settings-text {
   top: 50%;
   margin-left: 10px;
+  align-self: center;
 }
 
 .emergency-label {
