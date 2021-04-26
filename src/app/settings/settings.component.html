@@ -19,7 +19,7 @@
 
   <div *ngIf="showSpeedLimit" class="speed-limit-label">Speed Limit</div>
   <input *ngIf="showSpeedLimit" type="text" class="form-control" id="speedLimitValue" name="speedLimitValue"
-         [(ngModel)]="speedLimitValue" value="{{speedLimitValue}}" placeholder="Speed limit to be checked..." (change)="setNewSpeedLimitValue()">
+         [(ngModel)]="speedLimitValue" placeholder="Speed limit to be checked..." (change)="setNewSpeedLimitValue()">
 
 
   <div *ngIf="accidentRecognition" class="emergency-contact">Emergency contact:</div>
