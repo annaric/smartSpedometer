@@ -9,7 +9,7 @@ import {DataService} from '../data.service';
 })
 export class HomeComponent implements OnInit, OnDestroy{
   speedValue: any = 0;
-  speedLimit: any = 50;
+  speedLimitValue: any = 50;
   location = null;
   oldLocation: any = null;
   vibration: boolean;
@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy{
     this.data.currentVibrationStatus.subscribe(vibration => this.vibration = vibration);
     this.data.currentShowSpeedLimitStatus.subscribe(showSpeedLimit => this.showSpeedLimit = showSpeedLimit);
     this.data.currentSignalToneStatus.subscribe(signalTone => this.signalTone = signalTone);
+    this.data.currentSpeedLimitValue.subscribe(speedLimitValueValue => this.speedLimitValue = speedLimitValueValue);
     this.getLocation();
     this.intervalId = setInterval(() => this.getSpeed(), 1000);
   }
@@ -42,7 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy{
         speedMps = dist / time;
       }
       this.speedValue = String(Math.ceil((speedMps * 3600.0) / 1000.0));
-      /* if (this.speedValue >= this.speedLimit + 3) {
+      if (this.speedValue >= Number(this.speedLimitValue) + 3) {
         const homeBody = document.getElementById('homeBody');
         homeBody.setAttribute('class', 'too-fast');
         if (this.vibration) {window.navigator.vibrate(500); }
@@ -107,15 +108,15 @@ export class HomeComponent implements OnInit, OnDestroy{
     const homeBody = document.getElementById('homeBody');
     if (this.showSpeedLimit) {
       if ((this.speedValue % 10) <= 3 && (this.speedValue % 10) > 0 && this.speedValue > 30 && this.speedValue < 140) {
-        this.speedLimit = Math.round(Number(this.speedValue) - (Number(this.speedValue) % 10));
+        this.speedLimitValue = Math.round(Number(this.speedValue) - (Number(this.speedValue) % 10));
         homeBody.setAttribute('class', 'medium-fast');
       } else if ((this.speedValue % 10) > 3 && this.speedValue > 30 && (this.speedValue % 10) <= 7 && this.speedValue < 140) {
-        this.speedLimit = Math.round(Number(this.speedValue) - (Number(this.speedValue) % 10));
+        this.speedLimitValue = Math.round(Number(this.speedValue) - (Number(this.speedValue) % 10));
         homeBody.setAttribute('class', 'too-fast');
         if (this.vibration) {window.navigator.vibrate(1000); }
         this.playAudio();
       } else {
-        this.speedLimit = Math.round(Number(this.speedValue) + (10 - (Number(this.speedValue) % 10)));
+        this.speedLimitValue = Math.round(Number(this.speedValue) + (10 - (Number(this.speedValue) % 10)));
         homeBody.setAttribute('class', 'slow-enough');
       }
     }
