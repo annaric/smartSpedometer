@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy{
     this.data.currentSignalToneStatus.subscribe(signalTone => this.signalTone = signalTone);
     this.data.currentSpeedLimitValue.subscribe(speedLimitValueValue => this.speedLimitValue = speedLimitValueValue);
     this.getLocation();
-    this.intervalId = setInterval(() => this.getSpeed(), 1000);
+    this.intervalId = setInterval(() => this.getSpeed(), 2000);
   }
   ngOnDestroy(): void {
     clearInterval(this.intervalId);
