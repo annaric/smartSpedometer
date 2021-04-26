@@ -8,8 +8,8 @@ import {DataService} from '../data.service';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit, OnDestroy{
-  speedValue: any = 0;
-  speedLimitValue: any = 50;
+  speedValue = 0;
+  speedLimitValue = 50;
   location = null;
   oldLocation: any = null;
   vibration: boolean;
@@ -24,13 +24,17 @@ export class HomeComponent implements OnInit, OnDestroy{
     this.data.currentSignalToneStatus.subscribe(signalTone => this.signalTone = signalTone);
     this.data.currentSpeedLimitValue.subscribe(speedLimitValueValue => this.speedLimitValue = speedLimitValueValue);
     this.getLocation();
-    this.intervalId = setInterval(() => this.getSpeed(), 2000);
+    this.intervalId = setInterval(() => this.update(), 1000);
   }
   ngOnDestroy(): void {
     clearInterval(this.intervalId);
   }
-  getSpeed(): void {
+  update(): void {
     this.getLocation();
+    this.getSpeed();
+    this.checkSpeedLimit();
+  }
+  getSpeed(): void {
     if (this.oldLocation != null && this.location != null) {
       const oldLatitude = this.oldLocation.coords.latitude;
       const oldLongitude = this.oldLocation.coords.longitude;
@@ -43,25 +47,27 @@ export class HomeComponent implements OnInit, OnDestroy{
         speedMps = dist / time;
       }
       const speedKmh = Math.ceil((speedMps * 3600.0) / 1000.0);
-      if ((speedKmh - Number(this.speedValue < 100))){ this.speedValue = String(speedKmh); }
-      if (Number(this.speedValue) >= Number(this.speedLimitValue) + 3) {
-        if (this.showSpeedLimit){
-          const homeBody = document.getElementById('homeBody');
-          homeBody.setAttribute('class', 'too-fast');
-        }
-        if (this.vibration) {window.navigator.vibrate(500); }
-        this.playAudio();
-      } else {
+      if ((speedKmh - this.speedValue < 100)){ this.speedValue = speedKmh; }
+    }
+  }
+  checkSpeedLimit(): void {
+    if (this.speedValue >= (this.speedLimitValue + 3)) {
+      if (this.showSpeedLimit){
         const homeBody = document.getElementById('homeBody');
-        homeBody.setAttribute('class', 'slow-enough');
+        homeBody.setAttribute('class', 'too-fast');
       }
+      if (this.vibration) {window.navigator.vibrate(500); }
+      this.playAudio();
+    } else {
+      const homeBody = document.getElementById('homeBody');
+      homeBody.setAttribute('class', 'slow-enough');
     }
   }
   getLocation(): void {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((pos) => this.succes(pos), (err) => this.error(err), {
         enableHighAccuracy: true,
-        timeout: 10000,
+        timeout: 1000,
         maximumAge: 0
       });
     } else {
@@ -102,29 +108,11 @@ export class HomeComponent implements OnInit, OnDestroy{
     }
   error(err): void {
     console.warn(`ERROR(${err.code}): ${err.message}`);
-    localStorage.setItem('location', null);
+    this.location = null;
   }
   succes(pos): void {
     this.oldLocation = this.location;
     this.location = pos;
-  }
-
-  simulateSpeedLimit(): void {
-    const homeBody = document.getElementById('homeBody');
-    if (this.showSpeedLimit) {
-      if ((this.speedValue % 10) <= 3 && (this.speedValue % 10) > 0 && this.speedValue > 30 && this.speedValue < 140) {
-        this.speedLimitValue = Math.round(Number(this.speedValue) - (Number(this.speedValue) % 10));
-        homeBody.setAttribute('class', 'medium-fast');
-      } else if ((this.speedValue % 10) > 3 && this.speedValue > 30 && (this.speedValue % 10) <= 7 && this.speedValue < 140) {
-        this.speedLimitValue = Math.round(Number(this.speedValue) - (Number(this.speedValue) % 10));
-        homeBody.setAttribute('class', 'too-fast');
-        if (this.vibration) {window.navigator.vibrate(1000); }
-        this.playAudio();
-      } else {
-        this.speedLimitValue = Math.round(Number(this.speedValue) + (10 - (Number(this.speedValue) % 10)));
-        homeBody.setAttribute('class', 'slow-enough');
-      }
-    }
   }
   playAudio(): void {
     if (this.signalTone) {

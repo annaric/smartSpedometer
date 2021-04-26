@@ -9,7 +9,7 @@ export class DataService {
   private vibration = new BehaviorSubject<boolean>(true);
   private signalTone = new BehaviorSubject<boolean>(true);
   private showSpeedLimit = new BehaviorSubject<boolean>(true);
-  private speedLimitValue = new BehaviorSubject<string>('50');
+  private speedLimitValue = new BehaviorSubject<number>(50);
   currentVibrationStatus = this.vibration.asObservable();
   currentSignalToneStatus = this.signalTone.asObservable();
   currentShowSpeedLimitStatus = this.showSpeedLimit.asObservable();
@@ -25,7 +25,7 @@ export class DataService {
   changeShowSpeedLimit(showSpeedLimit: boolean): void {
     this.showSpeedLimit.next(showSpeedLimit);
   }
-  changeSpeedLimitValue(speedLimitValue: string): void {
+  changeSpeedLimitValue(speedLimitValue: number): void {
     this.speedLimitValue.next(speedLimitValue);
   }
 
