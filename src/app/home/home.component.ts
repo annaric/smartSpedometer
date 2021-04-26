@@ -43,8 +43,8 @@ export class HomeComponent implements OnInit, OnDestroy{
         speedMps = dist / time;
       }
       const speedKmh = Math.ceil((speedMps * 3600.0) / 1000.0);
-      if ((speedKmh - this.speedValue < 100)){ this.speedValue = String(speedKmh); }
-      if (this.speedValue >= Number(this.speedLimitValue) + 3) {
+      if ((speedKmh - Number(this.speedValue < 100))){ this.speedValue = String(speedKmh); }
+      if (Number(this.speedValue) >= Number(this.speedLimitValue) + 3) {
         if (this.showSpeedLimit){
           const homeBody = document.getElementById('homeBody');
           homeBody.setAttribute('class', 'too-fast');
