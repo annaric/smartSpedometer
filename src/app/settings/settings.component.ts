@@ -13,7 +13,7 @@ export class SettingsComponent implements OnInit, AfterViewInit  {
     accidentRecognition = false;
     isCar = true;
     emergencyContact = {name: '', phone: ''};
-    speedLimitValue = '';
+    speedLimitValue = 50;
   constructor(private data: DataService) {}
 
   ngOnInit(): void {
@@ -27,7 +27,7 @@ export class SettingsComponent implements OnInit, AfterViewInit  {
     const vibrationButton = document.getElementById('vibration');
     const speedLimitButton = document.getElementById('speedLimit');
     const signalToneButton = document.getElementById('signalTone');
-    speedLimitValueInput.setAttribute('value', this.speedLimitValue);
+    speedLimitValueInput.setAttribute('value', String(this.speedLimitValue));
     if (this.vibration) { vibrationButton.setAttribute('checked', ''); }
     if (this.showSpeedLimit) { speedLimitButton.setAttribute('checked', ''); }
     if (this.signalTone) { signalToneButton.setAttribute('checked', ''); }
@@ -49,7 +49,7 @@ export class SettingsComponent implements OnInit, AfterViewInit  {
   setNewSpeedLimitValue(): void {
     const speedLimitValueInput = document.getElementById('speedLimitValue');
     if (!isNaN(Number(this.speedLimitValue))) {
-      this.data.changeSpeedLimitValue(this.speedLimitValue);
+      this.data.changeSpeedLimitValue(Number(this.speedLimitValue));
       speedLimitValueInput.setAttribute('class', 'right-input');
     } else {
       speedLimitValueInput.setAttribute('class', 'wrong-input');
