@@ -42,14 +42,19 @@ export class HomeComponent implements OnInit, OnDestroy{
       if (time !== 0) {
         speedMps = dist / time;
       }
-      this.speedValue = String(Math.ceil((speedMps * 3600.0) / 1000.0));
+      const speedKmh = Math.ceil((speedMps * 3600.0) / 1000.0);
+      if ((speedKmh - this.speedValue < 100)){ this.speedValue = String(speedKmh); }
       if (this.speedValue >= Number(this.speedLimitValue) + 3) {
-        const homeBody = document.getElementById('homeBody');
-        homeBody.setAttribute('class', 'too-fast');
+        if (this.showSpeedLimit){
+          const homeBody = document.getElementById('homeBody');
+          homeBody.setAttribute('class', 'too-fast');
+        }
         if (this.vibration) {window.navigator.vibrate(500); }
         this.playAudio();
+      } else {
+        const homeBody = document.getElementById('homeBody');
+        homeBody.setAttribute('class', 'slow-enough');
       }
-      // this.simulateSpeedLimit();*/
     }
   }
   getLocation(): void {

@@ -21,16 +21,16 @@ export class SettingsComponent implements OnInit, AfterViewInit  {
     this.data.currentShowSpeedLimitStatus.subscribe(showSpeedLimit => this.showSpeedLimit = showSpeedLimit);
     this.data.currentSignalToneStatus.subscribe(signalTone => this.signalTone = signalTone);
     this.data.currentSpeedLimitValue.subscribe(speedLimitValue => this.speedLimitValue = speedLimitValue);
-    const vibrationButton = document.getElementById('vibration');
-    const speedLimitButton = document.getElementById('speedLimit');
-    const signalToneButton = document.getElementById('signalTone');
-    if (this.vibration) { vibrationButton.setAttribute('checked', ''); }
-    if (this.showSpeedLimit) { speedLimitButton.setAttribute('checked', ''); }
-    if (this.signalTone) { signalToneButton.setAttribute('checked', ''); }
   }
   ngAfterViewInit(): void {
     const speedLimitValueInput = document.getElementById('speedLimitValue');
+    const vibrationButton = document.getElementById('vibration');
+    const speedLimitButton = document.getElementById('speedLimit');
+    const signalToneButton = document.getElementById('signalTone');
     speedLimitValueInput.setAttribute('value', this.speedLimitValue);
+    if (this.vibration) { vibrationButton.setAttribute('checked', ''); }
+    if (this.showSpeedLimit) { speedLimitButton.setAttribute('checked', ''); }
+    if (this.signalTone) { signalToneButton.setAttribute('checked', ''); }
   }
   changeSpeedLimit(): void {
     this.data.changeShowSpeedLimit(!this.showSpeedLimit);
@@ -47,7 +47,13 @@ export class SettingsComponent implements OnInit, AfterViewInit  {
   }
 
   setNewSpeedLimitValue(): void {
-    this.data.changeSpeedLimitValue(this.speedLimitValue);
+    const speedLimitValueInput = document.getElementById('speedLimitValue');
+    if (!isNaN(Number(this.speedLimitValue))) {
+      this.data.changeSpeedLimitValue(this.speedLimitValue);
+      speedLimitValueInput.setAttribute('class', 'right-input');
+    } else {
+      speedLimitValueInput.setAttribute('class', 'wrong-input');
+    }
     console.log(this.speedLimitValue);
   }
 }

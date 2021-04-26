@@ -1,15 +1,4 @@
-/*@font-face {
-  font-family: SpeedLimitFont;
-  src: url('../../data/DIN1451/din1451a.ttf')
-  format("truetype");
-}*/
-
 .container {
-  /*--gruen: #99EEA4;
-  --rot: #fe6868;
-  --gelb: #eeee99;
-  --settings-green: #11bf28;
-  --settings-red: #ff3737;*/
   background-color: white;
   margin-top: 20px;
   /*font-family: 'Roboto';*/
@@ -20,7 +9,6 @@
   max-width: 600px;
 }
 
-/* Hide default HTML checkbox */
 input[type="checkbox"] {
   opacity: 0;
   width: 0;
@@ -38,6 +26,13 @@ input[type="checkbox"] {
   grid-column: auto / span 2;
 }
 
+hr {
+  grid-column: auto / span 2;
+  height: 1px;
+  width: 100%;
+  background-image: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,75), rgba(0,0,0,0));
+}
+
 input {
   height: 20px;
   margin-right: 34px;
@@ -47,6 +42,22 @@ input {
   top: 50%;
   margin-left: 10px;
   align-self: center;
+}
+
+#speedLimitValue {
+  width: 100px;
+  justify-self: end;
+  height: 35px;
+  font-size: 20px;
+  background-color: var(--text-field-background-color, white);
+}
+
+.wrong-input {
+  --text-field-background-color: #fe6868;
+}
+
+.right-input {
+  --text-field-background-color: white;
 }
 
 .emergency-label {

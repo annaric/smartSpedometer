@@ -1,15 +1,29 @@
 <div class="container">
-  <div class="settings-text">Vibration</div>
-  <mat-slide-toggle id="vibration" (change)="changeVibration()" [checked]="vibration"></mat-slide-toggle>
-
-  <div class="settings-text">Show speed limit</div>
+    <div class="settings-text">Show speed limit</div>
   <mat-slide-toggle id="speedLimit" (change)="changeSpeedLimit()" [checked]="showSpeedLimit"></mat-slide-toggle>
 
-  <div class="settings-text">Signal tone</div>
-  <mat-slide-toggle id="signalTone" (change)="changeSignalTone()" [checked]="signalTone"></mat-slide-toggle>
+  <hr *ngIf="showSpeedLimit">
+
+  <div *ngIf="showSpeedLimit" class="settings-text">Vibration</div>
+  <mat-slide-toggle *ngIf="showSpeedLimit" id="vibration" (change)="changeVibration()" [checked]="vibration"></mat-slide-toggle>
+
+  <hr *ngIf="showSpeedLimit">
+
+  <div *ngIf="showSpeedLimit" class="settings-text">Signal tone</div>
+  <mat-slide-toggle *ngIf="showSpeedLimit" id="signalTone" (change)="changeSignalTone()" [checked]="signalTone"></mat-slide-toggle>
+
+  <hr *ngIf="showSpeedLimit">
+
+  <div *ngIf="showSpeedLimit" class="speed-limit-label">Speed Limit</div>
+  <input *ngIf="showSpeedLimit" type="text" class="form-control" id="speedLimitValue" name="speedLimitValue"
+         [(ngModel)]="speedLimitValue" placeholder="Speed limit to be checked..." (change)="setNewSpeedLimitValue()">
+
+  <hr>
 
   <div class="settings-text">Accident recognition</div>
   <mat-slide-toggle (change)="changeAccidentRecognition()" [checked]="accidentRecognition" disabled></mat-slide-toggle>
+
+  <hr>
 
   <div class="settings-text">Vehicle type</div>
   <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
@@ -17,10 +31,7 @@
     <mat-button-toggle value="truck" disabled>Truck</mat-button-toggle>
   </mat-button-toggle-group>
 
-  <div *ngIf="showSpeedLimit" class="speed-limit-label">Speed Limit</div>
-  <input *ngIf="showSpeedLimit" type="text" class="form-control" id="speedLimitValue" name="speedLimitValue"
-         [(ngModel)]="speedLimitValue" placeholder="Speed limit to be checked..." (change)="setNewSpeedLimitValue()">
-
+  <hr *ngIf="accidentRecognition">
 
   <div *ngIf="accidentRecognition" class="emergency-contact">Emergency contact:</div>
   <div *ngIf="accidentRecognition" class="emergency-label">Name:</div>
