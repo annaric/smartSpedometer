@@ -7,7 +7,7 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  speedValue: any = 0;
+  speedValue = 0;
   speedLimit: any = 50;
   location = null;
   oldLocation: any = null;
@@ -37,7 +37,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (time !== 0) {
         speedMps = dist / time;
       }
-      this.speedValue = String(Math.ceil((speedMps * 3600.0) / 1000.0));
+      this.speedValue = Math.ceil((speedMps * 3600.0) / 1000.0);
+      document.getElementById('speed-bubble').innerHTML = String(this.speedValue);
     }
   }
   getLocation(): void {
